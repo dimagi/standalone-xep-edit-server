@@ -5,6 +5,7 @@ git clone git@github.com:dimagi/standalone-xep-hq-server.git
 git clone git@github.com:dimagi/standalone-xep-edit-server.git
 
 cd standalone-xep-hq-server
+git pull
 git submodule init
 git submodule update
 chmod 755 manage.py
@@ -12,6 +13,7 @@ chmod 755 manage.py
 cd ..
 
 cd standalone-xep-edit-server
+git pull
 #git submodule init
 #git submodule update
 chmod 755 manage.py
