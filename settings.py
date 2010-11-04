@@ -85,10 +85,10 @@ INSTALLED_APPS = (
 
 
 
-URL_BASE = "http://localhost:8001"
+URL_BASE = "http://localhost:8011"
 
 COUCHDB_DATABASES = [
     ('xep_edit_server', 'http://localhost:5984/xep_edit_server'),
 ]
 
-XEP_EDITOR = "http://localhost:8001/FormDesigner.html?token={token}&status={status}"
+XEP_EDITOR = "http://localhost:8011/FormDesigner.html?token={token}&status={status}"
