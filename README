@@ -1,0 +1,5 @@
+This is a standalone server that implements the XForms Editing Protocol (XEP) for the editor's side,
+with simple hooks so that you can use it to integrate your own XForms Editor into CommCare HQ.
+
+The easiest way to test it is with standalone_xep_hq_server, which is a reference implementation of the XEP
+on the HQ side.

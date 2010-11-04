@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Editor Page</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+        <script>
+            /* copied from http://www.netlobo.com/url_query_string_javascript.html */
+            function gup( name )
+            {
+              name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+              var regexS = "[\\?&]"+name+"=([^&#]*)";
+              var regex = new RegExp( regexS );
+              var results = regex.exec( window.location.href );
+              if( results == null )
+                return "";
+              else
+                return results[1];
+            }
+            $(function(){
+                token = gup('token');
+                xform_url = '/xep/xform/' + token + '/';
+                $.get(xform_url, function(data){
+                    $("#xform").text(data);
+                });
+                $("#token").attr('value', token).hide();
+            });
+        </script>
+    </head>
+    <body>
+        <form method="POST" action="/xep/save/" enctype="multipart/form-data">
+            <input type="hidden" id="token" name="token" />
+            <textarea id="xform" name="xform"></textarea>
+            <div>
+                <input type="radio" name="continue" value="false" checked="checked"/> Save and Quit 
+            </div>
+            <div>
+                <input type="radio" name="continue" value="true" /> Save and Continue
+            </div>
+                <input type="submit" value="Go!"/>
+        </form>
+    </body>
+</html>
