@@ -2,31 +2,19 @@
 <html>
     <head>
         <title>Editor Page</title>
+        <!-- JQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-        <script>
-            /* copied from http://www.netlobo.com/url_query_string_javascript.html */
-            function get_url_param( name )
-            {
-              name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-              var regexS = "[\\?&]"+name+"=([^&#]*)";
-              var regex = new RegExp( regexS );
-              var results = regex.exec( window.location.href );
-              if( results == null )
-                return "";
-              else
-                return results[1];
-            }
-        </script>
+        <!-- get_url_param -->
+        <script src="https://gist.github.com/raw/662940/6819983cb03f3873bbb930f3c805548a0ef1b751/gistfile1.js"></script>
         <script>
             $(function(){
                 /* Load URL params */
                 var token = get_url_param('token');
                 var status = get_url_param('status');
                 /*
-                    Ask xep_edit_server for the xform corresponding
-                    to token, by sending an AJAX request to '/xep/xform/{token}/'
-                    and place the response in the text of the
-                    '#xform' DOM element
+                    Get the form content:
+                    1. Make AJAX call to '/xep/xform/{token}/'
+                    2. Load the response into the DOM
                  */
                 var xform_url = '/xep/xform/' + token + '/';
                 $.get(xform_url, function(data){
@@ -34,15 +22,14 @@
                 });
 
                 /*
-                    Add token as a hidden element to the form that will be used to post a
-                    save request to the server.
+                    Add the token to the DOM
                  */
                 $("#token").attr('value', token).hide();
                 /*
                     Display a message, depending on the status:
-                    "" -> Haven't yet tried to save.
-                    "OK" -> Successfully saved to HQ
-                    "failed" -> Tried to save to HQ but failed
+                    1. "" -> Haven't yet tried to save.
+                    2. "OK" -> Successfully saved to HQ
+                    3. "failed" -> Tried to save to HQ but failed
                  */
                 $("#status").text(function(){
                     if(status == "OK") {
@@ -60,16 +47,20 @@
     </head>
     <body>
         <p id="status"></p>
-        <form method="POST" action="/xep/save/" enctype="multipart/form-data">
+        <!--
+            To save to HQ, make the following POST to /xep/save (on the *edit* server, not hq)
+            1. "token" (this identifies your session)
+            2. "xform" (the text you want to save)
+            3. "continue" ("true" or "false"; whether to continue editing or to go back to HQ)
+        -->
+        <form method="POST" action="/xep/save/">
             <input type="hidden" id="token" name="token" />
-            <textarea id="xform" name="xform"></textarea>
-            <div>
-                <input type="radio" name="continue" value="false" checked="checked"/> Save and Quit 
-            </div>
-            <div>
-                <input type="radio" name="continue" value="true" /> Save and Continue
-            </div>
-                <input type="submit" value="Go!"/>
+
+            <textarea id="xform" name="xform" rows="15" cols="30"></textarea> <br />
+            <input type="radio" name="continue" value="false" checked="checked"/> Save and Quit <br />
+            <input type="radio" name="continue" value="true" /> Save and Continue <br />
+
+            <input type="submit" value="Go!"/>
         </form>
     </body>
 </html>

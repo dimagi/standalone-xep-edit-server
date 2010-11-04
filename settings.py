@@ -91,4 +91,9 @@ COUCHDB_DATABASES = [
     ('xep_edit_server', 'http://localhost:5984/xep_edit_server'),
 ]
 
+# "Please point me to your editor's url!"
+# The url should be able to accept a token (use {token} as below)
+# and optionally a status
 XEP_EDITOR = "http://localhost:8011/FormDesigner.html?token={token}&status={status}"
+# Look at example_editor/templates/FormDesigner.html for an example of how to integrate
+# your editor with this server. (It's really easy!!)

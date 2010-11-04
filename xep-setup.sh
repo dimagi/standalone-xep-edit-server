@@ -9,7 +9,6 @@ git submodule init
 git submodule update
 chmod 755 manage.py
 ./manage.py syncdb
-./manage.py runserver 8010
 cd ..
 
 cd standalone-xep-edit-server
@@ -17,6 +16,16 @@ cd standalone-xep-edit-server
 #git submodule update
 chmod 755 manage.py
 ./manage.py syncdb
-./manage.py runserver 8011
 cd ..
 
+echo "
+----------- Setup Complete ----------------------
+In two separate command windows please run the
+following commands to start the servers:
+
+    prompt-one$ cd xep/standalone-xep-hq-server
+    prompt-one$ ./manage.py runserver 8010
+
+    prompt-two$ cd xep/standalone-xep-edit-server
+    prompt-two$ ./manage.py runserver 8011
+"
