@@ -26,7 +26,7 @@ def initiate(request):
 def start(request, token):
     edit_session = EditSession.get_by_token(token)
     
-    response = HttpResponseRedirect(settings.XEP_EDITOR % edit_session.token)
+    response = HttpResponseRedirect(settings.XEP_EDITOR.format(token=edit_session.token, status=""))
     edit_session.set_cookie(response)
     return response
     
@@ -56,30 +56,29 @@ def save(request):
     
     edit_session.xform = xform
     edit_session.save()
-        
-    response = post_multipart(edit_session.callback, {
-        'session_key': edit_session.key,
-        'continue': cont,
-    }.items(), [
-        ('xform', 'xform.xml', xform)
-    ])
-    r = json.loads(response.content)
-    
-    if r['status'] == "OK":
-        if r['continue']:
-            response = HttpResponseRedirect(settings.XEP_EDITOR % token)
-        else:
-            response = HttpResponseRedirect(r['callback'])
-    else:
-        # r['continue'] is assured to be True
-        response = HttpResponseRedirect(settings.XEP_EDITOR_ERROR % (token, r['status']))
 
-    edit_session.delete_cookie(response)
+    try:
+        response = post_multipart(edit_session.callback, {
+            'session_key': edit_session.key,
+            'continue': cont,
+        }.items(), [
+            ('xform', 'xform.xml', xform)
+        ])
+        r = json.loads(response.content)
+    except:
+        r = {"continue": True, "status": "failed", "session_key": None, "callback": None}
+
+
     if r["continue"]:
-        edit_session.key = r['session_key']
-        edit_session.save()
-        edit_session.set_cookie(response)
+        response = HttpResponseRedirect(settings.XEP_EDITOR.format(token=token, status=r['status']))
+        if r['session_key']:
+            edit_session.delete_cookie(response)
+            edit_session.key = r['session_key']
+            edit_session.save()
+            edit_session.set_cookie(response)
     else:
+        response = HttpResponseRedirect(r['callback'])
+        edit_session.delete_cookie(response)
         edit_session.active = False
         edit_session.save()
     

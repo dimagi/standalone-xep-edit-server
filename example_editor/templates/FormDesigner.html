@@ -5,7 +5,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
         <script>
             /* copied from http://www.netlobo.com/url_query_string_javascript.html */
-            function gup( name )
+            function get_url_param( name )
             {
               name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
               var regexS = "[\\?&]"+name+"=([^&#]*)";
@@ -16,17 +16,50 @@
               else
                 return results[1];
             }
+        </script>
+        <script>
             $(function(){
-                token = gup('token');
-                xform_url = '/xep/xform/' + token + '/';
+                /* Load URL params */
+                var token = get_url_param('token');
+                var status = get_url_param('status');
+                /*
+                    Ask xep_edit_server for the xform corresponding
+                    to token, by sending an AJAX request to '/xep/xform/{token}/'
+                    and place the response in the text of the
+                    '#xform' DOM element
+                 */
+                var xform_url = '/xep/xform/' + token + '/';
                 $.get(xform_url, function(data){
                     $("#xform").text(data);
                 });
+
+                /*
+                    Add token as a hidden element to the form that will be used to post a
+                    save request to the server.
+                 */
                 $("#token").attr('value', token).hide();
+                /*
+                    Display a message, depending on the status:
+                    "" -> Haven't yet tried to save.
+                    "OK" -> Successfully saved to HQ
+                    "failed" -> Tried to save to HQ but failed
+                 */
+                $("#status").text(function(){
+                    if(status == "OK") {
+                        return "Successfully saved to HQ.";
+                    }
+                    else if(status == "failed") {
+                        return "Failed to save to HQ!";
+                    }
+                    else {
+                        return status;
+                    }
+                }());
             });
         </script>
     </head>
     <body>
+        <p id="status"></p>
         <form method="POST" action="/xep/save/" enctype="multipart/form-data">
             <input type="hidden" id="token" name="token" />
             <textarea id="xform" name="xform"></textarea>

@@ -91,5 +91,4 @@ COUCHDB_DATABASES = [
     ('xep_edit_server', 'http://localhost:5984/xep_edit_server'),
 ]
 
-XEP_EDITOR = "http://localhost:8001/FormDesigner.html?token=%s"
-XEP_EDITOR_ERROR = "http://localhost:8001/FormDesigner.html?token=%s&error=%s"
+XEP_EDITOR = "http://localhost:8001/FormDesigner.html?token={token}&status={status}"
