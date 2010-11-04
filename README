@@ -8,10 +8,11 @@ Before proceeding, please install the two dependencies:
 - CouchDB 1.0.1 or later (available at http://couch.io/get)
 - Django ("pip install django" or "easy_install django")
 
-To get set up fast, you can run xep-setup.sh (it assumes you are reading this on github will download both
-standalone-xep-hq-server and standalone-xep-edit-server into a directory called ./xep/). This will also start
-both servers. The hq server will run on port 8010, and the edit server will run on port 8011.
+To get set up fast, you can run xep-setup.sh. It's a bootstrapper, so download it first, and it will download this project as well as the standalone-xep-hq-server. Once you're done, you should run the hq server on port 8010, and the edit server on port 8011.
 
-Both standalone servers come with an example HQ/Editor, so it will run out of the box; you just have to replace
-example_editor with your actual editor by changing the variable XEP_EDITOR in settings.py . To test the
+Both standalone servers come with an example HQ/Editor, so it will run out of the box. To test the
 out-of-the-box setup, go over to http://localhost:8010/HQ/ .
+
+Next link it up to your editor (which I'm sure is much better than the example :) ). To get started open
+    settings.py
+and find the variable XEP_EDITOR at the bottom. There should be instructions on how to proceed from there.
