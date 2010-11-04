@@ -45,9 +45,9 @@ def save(request):
         token = request.POST['token']
         cont = request.POST['continue']
         edit_session = EditSession.safe_get(token, request)
-    except BadSessionKey:
+    except:
         return HttpResponseForbidden()
-        
+
     xform = request.FILES.get('xform', '')
     if xform:
         xform = xform.read()

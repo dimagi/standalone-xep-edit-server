@@ -4,6 +4,8 @@ import hashlib, random
 
 class BadSessionKey(Exception):
     pass
+class BadSessionToken(Exception):
+    pass
 
 class EditSession(Document):
     key = StringProperty()
@@ -21,10 +23,13 @@ class EditSession(Document):
     @classmethod
     def safe_get(cls, token, request):
         edit_session = cls.get_by_token(token)
-        if not edit_session.key == request.COOKIES[edit_session._cookie_name()]:
+        if not edit_session:
+            raise BadSessionToken()
+        elif not edit_session.key == request.COOKIES[edit_session._cookie_name()]:
             raise BadSessionKey()
         else:
             return edit_session
+
             
     def set_cookie(self, response):
         response.set_cookie(self._cookie_name(), self.key)
