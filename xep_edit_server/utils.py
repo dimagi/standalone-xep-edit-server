@@ -9,6 +9,7 @@ def post_multipart(host_selector, fields, files):
     files is a sequence of (name, filename, value) elements for data to be uploaded as files
     Return the server's response page.
     """
+
     host_selector = host_selector.lstrip('http://')
     parts = host_selector.split('/')
     host = parts.pop(0)
@@ -34,7 +35,7 @@ def encode_multipart_formdata(fields, files):
     Return (content_type, body) ready for httplib.HTTP instance
     """
     BOUNDARY = '----------ThIs_Is_tHe_bouNdaRY_$'
-    CRLF = '\r\n'
+    CRLF = u'\r\n'
     L = []
     for (key, value) in fields:
         L.append('--' + BOUNDARY)
@@ -44,14 +45,14 @@ def encode_multipart_formdata(fields, files):
     for (key, filename, value) in files:
         L.append('--' + BOUNDARY)
         L.append('Content-Disposition: form-data; name="%s"; filename="%s"' % (key, filename))
-        L.append('Content-Type: %s' % get_content_type(filename))
+        L.append('Content-Type: %s; charset: utf-8' % get_content_type(filename))
         L.append('')
         L.append(value)
     L.append('--' + BOUNDARY + '--')
     L.append('')
     body = CRLF.join(L)
     content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
-    return content_type, body
+    return content_type, body.encode('utf-8')
 
 def get_content_type(filename):
     return mimetypes.guess_type(filename)[0] or 'application/octet-stream'

@@ -16,7 +16,7 @@ def initiate(request):
     edit_session = EditSession(
         key = session_key,
         callback = request.POST['callback'],
-        xform = request.FILES['xform'].read(),
+        xform = unicode(request.FILES['xform'].read(), "utf-8"),
     )
     edit_session.gentoken()
     edit_session.save()
@@ -50,22 +50,24 @@ def save(request):
 
     xform = request.FILES.get('xform', '')
     if xform:
-        xform = xform.read()
+        xform = unicode(xform.read(), "utf-8")
     else:
         xform = request.POST['xform']
     
     edit_session.xform = xform
     edit_session.save()
 
+    response = post_multipart(edit_session.callback, {
+        'session_key': edit_session.key,
+        'continue': cont,
+    }.items(), [
+        ('xform', 'xform.xml', xform)
+    ])
     try:
-        response = post_multipart(edit_session.callback, {
-            'session_key': edit_session.key,
-            'continue': cont,
-        }.items(), [
-            ('xform', 'xform.xml', xform)
-        ])
         r = json.loads(response.content)
     except:
+        if settings.DEBUG:
+            return response
         r = {"continue": True, "status": "failed", "session_key": None, "callback": None}
 
 
