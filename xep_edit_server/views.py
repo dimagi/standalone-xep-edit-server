@@ -44,6 +44,8 @@ def save(request):
     try:
         token = request.POST['token']
         cont = request.POST['continue']
+        ajax = request.POST.get('ajax', 'true')
+        ajax = json.loads(ajax)
         edit_session = EditSession.safe_get(token, request)
     except:
         return HttpResponseForbidden()
@@ -71,17 +73,22 @@ def save(request):
         r = {"continue": True, "status": "failed", "session_key": None, "callback": None}
 
 
+    if ajax:
+        JSON = json.loads(json.dumps(r))
+        del JSON['session_key']
+        response = HttpResponse(json.dumps(JSON))
+        
     if r["continue"]:
-        response = HttpResponseRedirect(settings.XEP_EDITOR.format(token=token, status=r['status']))
+        if not ajax: response = HttpResponseRedirect(settings.XEP_EDITOR.format(token=token, status=r['status']))
         if r['session_key']:
             edit_session.delete_cookie(response)
             edit_session.key = r['session_key']
             edit_session.save()
             edit_session.set_cookie(response)
     else:
-        response = HttpResponseRedirect(r['callback'])
+        if not ajax: response = HttpResponseRedirect(r['callback'])
         edit_session.delete_cookie(response)
         edit_session.active = False
         edit_session.save()
-    
+
     return response
