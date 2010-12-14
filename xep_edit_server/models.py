@@ -22,13 +22,15 @@ class EditSession(Document):
         return cls.view('xep_edit_server/sessions', key=token).one()
     @classmethod
     def safe_get(cls, token, request):
+        #print request.COOKIES
         edit_session = cls.get_by_token(token)
         if not edit_session:
             raise BadSessionToken()
-        elif not edit_session.key == request.COOKIES[edit_session._cookie_name()]:
-            raise BadSessionKey()
+#        elif not edit_session.key == request.COOKIES[edit_session._cookie_name()]:
+#            raise BadSessionKey()
         else:
             return edit_session
+#        return edit_session
 
             
     def set_cookie(self, response):

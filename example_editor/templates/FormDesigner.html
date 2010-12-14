@@ -48,7 +48,7 @@
                                 return status;
                             }
                         }());
-                        if(response.continue == false) {
+                        if(response.continueEdit == false) {
                             location.href = response.callback;
                         }
 
@@ -63,14 +63,14 @@
             To save to HQ, make the following POST to /xep/save (on the *edit* server, not hq)
             1. "token" (this identifies your session)
             2. "xform" (the text you want to save)
-            3. "continue" ("true" or "false"; whether to continue editing or to go back to HQ)
+            3. "continueEdit" ("true" or "false"; whether to continue editing or to go back to HQ)
         -->
         <form method="POST" action="/xep/save/">
             <input type="hidden" id="token" name="token" />
 
             <textarea id="xform" name="xform" rows="15" cols="30"></textarea> <br />
-            <input type="radio" name="continue" value="false" checked="checked"/> Save and Quit <br />
-            <input type="radio" name="continue" value="true" /> Save and Continue <br />
+            <input type="radio" name="continueEdit" value="false" checked="checked"/> Save and Quit <br />
+            <input type="radio" name="continueEdit" value="true" /> Save and Continue <br />
 {#            <input type="hidden" name="ajax" value="false" />#}
 
             <input type="submit" value="Go!"/>
