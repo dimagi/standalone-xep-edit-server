@@ -43,7 +43,7 @@ def get_xform(request, token):
 def save(request):
     try:
         token = request.POST['token']
-        cont = request.POST['continueEdit']
+        cont = request.POST['continue']
         ajax = request.POST.get('ajax', 'true')
         ajax = json.loads(ajax)
         edit_session = EditSession.safe_get(token, request)
@@ -61,7 +61,7 @@ def save(request):
 
     response = post_multipart(edit_session.callback, {
         'session_key': edit_session.key,
-        'continueEdit': cont,
+        'continue': cont,
     }.items(), [
         ('xform', 'xform.xml', xform)
     ])
@@ -70,7 +70,7 @@ def save(request):
     except:
         if settings.DEBUG:
             return response
-        r = {"continueEdit": True, "status": "failed", "session_key": None, "callback": None}
+        r = {"continue": True, "status": "failed", "session_key": None, "callback": None}
 
 
     if ajax:
@@ -78,7 +78,7 @@ def save(request):
         del JSON['session_key']
         response = HttpResponse(json.dumps(JSON))
         
-    if r["continueEdit"]:
+    if r["continue"]:
         if not ajax: response = HttpResponseRedirect(settings.XEP_EDITOR.format(token=token, status=r['status']))
         if r['session_key']:
             edit_session.delete_cookie(response)
