@@ -97,3 +97,13 @@ COUCHDB_DATABASES = [
 XEP_EDITOR = "http://localhost:8011/FormDesigner.html?token={token}&status={status}"
 # Look at example_editor/templates/FormDesigner.html for an example of how to integrate
 # your editor with this server. (It's really easy!!)
+
+try:
+    #try to see if there's an environmental variable set for local_settings
+    import sys, os
+    if os.environ.has_key('LOCALSETTINGS'):
+        localpath = os.path.dirname(os.environ['LOCALSETTINGS'])
+        sys.path.insert(0, localpath)
+    from localsettings import *
+except ImportError:
+    pass
