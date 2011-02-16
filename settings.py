@@ -95,6 +95,8 @@ COUCHDB_DATABASES = [
 # The url should be able to accept a token (use {token} as below)
 # and optionally a status
 XEP_EDITOR = "http://localhost:8011/FormDesigner.html?token={token}&status={status}"
+
+FORWARDER_URL = "http://localhost:8012"
 # Look at example_editor/templates/FormDesigner.html for an example of how to integrate
 # your editor with this server. (It's really easy!!)
 

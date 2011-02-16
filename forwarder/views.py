@@ -2,8 +2,9 @@
 from urllib2 import urlopen
 from django.http import HttpResponse
 from urllib import urlencode
+from forwarder import config 
+
 def index(request):
-#    url = "http://192.168.7.107:8888" + request.get_full_path()[2:]
-    url = "http://127.0.0.1:8888" + request.get_full_path()[2:]
+    url = "%s%s" % (config.FORWARDER_URL, request.get_full_path()[2:])
     return HttpResponse(urlopen(url).read())
 
