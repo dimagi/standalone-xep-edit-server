@@ -1,5 +1,6 @@
 from django.http import * 
 ## {{{ http://code.activestate.com/recipes/146306/ (r1)
+# modified to support https
 import httplib, mimetypes
 
 def post_multipart(host_selector, fields, files):
@@ -9,14 +10,14 @@ def post_multipart(host_selector, fields, files):
     files is a sequence of (name, filename, value) elements for data to be uploaded as files
     Return the server's response page.
     """
-
-    host_selector = host_selector.lstrip('http://')
+    is_https = host_selector.startswith("https")
+    host_selector = host_selector.lstrip('htps:/')
     parts = host_selector.split('/')
     host = parts.pop(0)
     selector = '/' + '/'.join(parts)
     
     content_type, body = encode_multipart_formdata(fields, files)
-    h = httplib.HTTP(host)
+    h = httplib.HTTPS(host) if is_https else httplib.HTTP(host) 
     h.putrequest('POST', selector)
     h.putheader('content-type', content_type)
     h.putheader('content-length', str(len(body)))
