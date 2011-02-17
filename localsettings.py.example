@@ -1,0 +1,15 @@
+# the root of your xepserver (where this project lives)
+URL_BASE = "https://example.com/" 
+
+# Where your editer is. You often use the forwarder to forward to static html 
+# pages, like below
+XEP_EDITOR = "https://example.org/xepserver/f/FormDesigner.html?token={token}&status={status}&get_url=/xep/xform/&save_url=/xep/save/"
+
+# Where the forwarder ends up. In this example there should be a form designer 
+# at FormDesigner.html at teh end of this url.
+FORWARDER_URL = "https://example.com/formdesigner/"
+
+# You can add authentication to couchdb, or change the root location like below 
+COUCHDB_DATABASES = [
+    ('xep_edit_server', 'http://admin:password@localhost:5984/xep_edit_server'),
+]

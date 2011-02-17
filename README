@@ -4,7 +4,7 @@ This is a standalone server that implements the XForms Editing Protocol (XEP) fo
 with simple hooks so that you can use it to integrate your own XForms Editor into CommCare HQ.
 
 The easiest way to test it is with standalone-xep-hq-server, which is a reference implementation of the XEP
-on the HQ side.
+on the HQ side. Dimagi's FormDesigner offers a richer editing experience.
 
 ==Dependencies==
 
